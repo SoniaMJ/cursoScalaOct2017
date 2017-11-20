@@ -82,7 +82,7 @@ class StreamTest extends FlatSpec with Matchers with PropertyChecks {
 
   it should "be empty when parameter is 0 or below 0" in {
     emptyStream.take(0) should be (emptyStream)
-    stream.take(0) should be (emptyStream)
+    stream.take(0).toList should be (emptyStream.toList)
     size1Stream.take(0) should be (emptyStream)
 
     emptyStream.take(-5) should be (emptyStream)

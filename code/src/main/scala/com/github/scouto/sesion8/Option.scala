@@ -109,9 +109,6 @@ object Option {
   }
 
 
-
-
-
     def calcularCuota(age: Int, incidencias: Int): Double = {
     age * incidencias
   }
@@ -144,6 +141,13 @@ object Option {
       traverse(a)(x => x)
   }
 
-  def variance(xs: Seq[Double]): Option[Double] = ???
+  def variance(xs: Seq[Double]): Option[Double] = {
+    mean(xs) flatMap(m => mean(xs.map(x => math.pow(x-m, 2))))
+//    val m = mean(xs)
+//    m match {
+//      case None => None
+//      case Some(media) => mean(xs.map(x => math.pow(x - media, 2)))
+//    }
+  }
 
 }

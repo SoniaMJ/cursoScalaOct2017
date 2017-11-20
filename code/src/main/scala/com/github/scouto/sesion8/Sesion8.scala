@@ -56,6 +56,8 @@ object Sesion8 extends App{
 
 
 
+
+
   //Ejercicio 1
   val ejer1 =
     for {
@@ -74,12 +76,12 @@ object Sesion8 extends App{
   assert(ejer2 == List(("and", 3),("you", 3),("are",3),("not",3)))
 
 
-  //Ejercicio 2
+  //Ejercicio 3
   val ejer3 =
     for {
       list <- listaDeListas
-      word <- list
-      if list.length > 2 && word.length % 2 != 0
+      word <- list if list.length > 2
+      if word.length % 2 != 0
     } yield (word, word.length)
 
   assert(ejer3 == List(("and", 3)))

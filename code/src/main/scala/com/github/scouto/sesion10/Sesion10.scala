@@ -6,6 +6,11 @@ package com.github.scouto.sesion10
 object Sesion10 extends App{
 
 
+  def myIf[A](cond: Boolean, onTrue: => A, onFalse: => A): A = {
+    if (cond) onTrue
+    else onFalse
+  }
+
   def duplicateStrict(x: Double): Double = {
     println("hello")
     val result = x*2
