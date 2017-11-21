@@ -65,12 +65,7 @@ sealed trait Stream[+A] {
     }
   }
 
-  def exists(f: A => Boolean): Boolean = {
-    this match {
-      case Cons(h,t) => f(h()) || t().exists(f)
-      case _ => false
-    }
-  }
+  def exists(f: A => Boolean): Boolean = ???
 
   //Sesion 11
   def foldRight[B](z: => B)(f: (A, => B) => B): B = ???
@@ -83,7 +78,6 @@ sealed trait Stream[+A] {
   def existsFoldLeft(f: A => Boolean): Boolean = ???
 
   def forAll(p: A => Boolean): Boolean = ???
-
 
   def headOptionFold: Option[A] = ???
 
