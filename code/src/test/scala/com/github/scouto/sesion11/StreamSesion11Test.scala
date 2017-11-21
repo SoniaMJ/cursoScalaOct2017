@@ -12,6 +12,9 @@ import scala.util.Try
   */
 class StreamSesion11Test extends FlatSpec with Matchers with PropertyChecks {
 
+
+  val genPositiveInteger = for (n <- Gen.choose(0, 50)) yield n
+
   val stream = Stream(1,2,3)
   val streamString = Stream("1","2","3")
   val size1Stream = Stream("Hello")
@@ -128,11 +131,34 @@ class StreamSesion11Test extends FlatSpec with Matchers with PropertyChecks {
     stream.find(_ % 2 != 0) should be (Some(1))
   }
 
+  "ones" should "be always one" in {
+    val onesList = Stream.ones.take(51).toList
 
+    forAll(genPositiveInteger) { (n: Int) =>
+      onesList(n) should be (1)
+    }
+  }
+
+  "constant" should "be always the parameter" in {
+    val constantList = Stream.constant("Hi").take(51).toList
+
+    forAll(genPositiveInteger) { (n: Int) =>
+      constantList(n) should be ("Hi")
+    }
+  }
+
+  "from" should "be the same as from(n-1) +1 " in {
+    val fromList = Stream.from(1).take(51).toList
+
+    forAll(genPositiveInteger) { (n: Int) =>
+      if (n > 0) {
+        fromList(n) should be (fromList(n-1)+1)
+      }
+
+    }
+  }
 
   "fibs" should "be the proper fibonacci sequence" in {
-
-
 
     val fibList = Stream.fibs.take(51).toList
     fibList.head should be (0)
@@ -146,7 +172,6 @@ class StreamSesion11Test extends FlatSpec with Matchers with PropertyChecks {
     fibList(8) should be (21)
     fibList(9) should be (34)
 
-    val genPositiveInteger = for (n <- Gen.choose(0, 50)) yield n
     //Int.MaxValue = 2147483647
     //a partir e fib(47) se pasa de MaxInt
     forAll(genPositiveInteger) { (n: Int) =>
@@ -159,24 +184,42 @@ class StreamSesion11Test extends FlatSpec with Matchers with PropertyChecks {
     }
   }
 
+  "onesUnfold" should "be the same as ones" in {
+    val onesList = Stream.ones.take(51).toList
+    val onesUnfoldList = Stream.onesUnfold.take(51).toList
+
+    forAll(genPositiveInteger) { (n: Int) =>
+      onesList(n) should be (onesUnfoldList(n))
+    }
+  }
+
+  "constantUnfold" should "be the same as constant" in {
+    val constantList = Stream.constant("Bye").take(51).toList
+    val constantUnfoldList = Stream.constantUnfold("Bye").take(51).toList
+
+    forAll(genPositiveInteger) { (n: Int) =>
+      constantList(n) should be (constantUnfoldList(n))
+    }
+  }
+
+  "fromUnfold" should "be the same as from" in {
+    val fromList = Stream.from(1).take(51).toList
+    val fromUnfoldList = Stream.fromUnfold(1).take(51).toList
+
+    forAll(genPositiveInteger) { (n: Int) =>
+      fromList(n) should be (fromUnfoldList(n))
+    }
+  }
 
 
+  "fibsUnfold" should "be the same as fibs" in {
+    val fibsList = Stream.fibs.take(51).toList
+    val fibsUnfoldList = Stream.fibsUnfold.take(51).toList
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    forAll(genPositiveInteger) { (n: Int) =>
+      fibsList(n) should be (fibsUnfoldList(n))
+    }
+  }
 
 
 

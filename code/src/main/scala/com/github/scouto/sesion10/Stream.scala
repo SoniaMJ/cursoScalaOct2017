@@ -159,7 +159,7 @@ object Stream {
   }
 
   def from(n: Int): Stream[Int] = {
-    cons(n, constant(n+1))
+    cons(n, from(n+1))
   }
 
   def fibs: Stream[BigDecimal] = {
@@ -170,6 +170,28 @@ object Stream {
     loop(0,1)
   }
 
+  def unfold[A,S](z: S)(f: S => Option[(A,S)]): Stream[A] = {
+      f(z) match {
+        case None => Empty
+        case Some((value, state)) => cons(value, unfold(state)(f))
+      }
+  }
+
+  def onesUnfold = {
+      unfold(1)(_ => Some((1, 1)))
+  }
+
+  def constantUnfold[A](a: A): Stream[A] = {
+    unfold(a)(_ => Some((a, a)))
+  }
+
+  def fromUnfold(n: Int): Stream[Int] = {
+    unfold(n)(x => Some((x, x+1)))
+  }
+
+  def fibsUnfold: Stream[BigDecimal] = {
+    unfold((0, 1)){case (acc1, acc2) => Some((acc1, (acc2, acc1+acc2)))}
+  }
 
 }
 
