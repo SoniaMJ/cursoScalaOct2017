@@ -82,7 +82,7 @@ class StreamTest extends FlatSpec with Matchers with PropertyChecks {
 
   it should "be empty when parameter is 0 or below 0" in {
     emptyStream.take(0) should be (emptyStream)
-    stream.take(0).toList should be (emptyStream.toList)
+    stream.take(0) should be (emptyStream)
     size1Stream.take(0) should be (emptyStream)
 
     emptyStream.take(-5) should be (emptyStream)
@@ -107,9 +107,24 @@ class StreamTest extends FlatSpec with Matchers with PropertyChecks {
     stream.takeWhile(_ %2 != 0).toList should be (List(1))
     stream.takeWhile(_ < 10).toList should be (List(1, 2, 3))
     stream.takeWhile(_ < -10) should be (Stream())
-    stream.takeWhile(x => false) should be (Stream())
     stream.takeWhile(x => true).toList should be (List(1, 2, 3))
+    stream.takeWhile(x => false) should be (Stream())
 
+  }
+
+  "exists" should "return false for empty streams" in {
+    emptyIntStream.exists(_ > 5) should be (false)
+  }
+
+  it should "return true when the predicate if true for any value" in {
+    stream.exists(_ == 1) should be (true)
+    stream.exists(_ == 2) should be (true)
+    stream.exists(_ == 3) should be (true)
+  }
+
+  it should "return false when the predicate if false for whichever value" in {
+    stream.exists(_ == 4) should be (false)
+    stream.exists(_ < 0) should be (false)
   }
 
 }
