@@ -126,6 +126,15 @@ object Stream {
 
   def fibs: Stream[BigDecimal] = ???
 
+  def unfold[A,S](z: S)(f: S => Option[(A,S)]): Stream[A] = ???
+
+  def onesUnfold = ???
+
+  def constantUnfold[A](a: A): Stream[A] = ???
+
+  def fromUnfold(n: Int): Stream[Int] = ???
+
+  def fibsUnfold: Stream[BigDecimal] = ???
 
 }
 
