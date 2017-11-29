@@ -145,18 +145,57 @@ sealed trait Stream[+A] {
 
 
   //Sesion 12
-  def mapUnfold[B](f: A => B): Stream[B] = ???
-
-  def takeUnfold(n: Int): Stream[A] = ???
-
-  def takeWhileUnfold(p: A => Boolean): Stream[A] = ???
-
-  def zipWith[B, C](other: Stream[B])(f: (A, B) => C): Stream[C] = ???
-
-  def zipWithAll[B, C](other: Stream[B])(f: (Option[A], Option[B]) => C) : Stream[C] = ???
+  def mapUnfold[B](f: A => B): Stream[B] = {
+    unfold(this){
+      case Cons(h, t) => Some((f(h()), t()))
+      case Empty => None
+    }
+  }
 
 
-  def tails: Stream[Stream[A]] = ???
+  def takeUnfold(n: Int): Stream[A] = {
+    unfold((this, n)) {
+      case (Cons(h, _), 1)=> Some((h(), (empty, 0)))
+      case (Cons(h, t), x) if x > 1 => Some((h(), (t(), x-1)))
+      case _ => None
+    }
+  }
+
+
+//  S => Option[(A, (this, n))]
+
+  def takeWhileUnfold(p: A => Boolean): Stream[A] = {
+    unfold(this){
+      case Cons(h, t) if p(h()) => Some((h(), t()))
+      case _ => None
+    }
+  }
+
+
+
+//
+//  List(1,2,3)
+//  List(2,3,4)
+  def zipWith[B, C](other: Stream[B])(f: (A, B) => C): Stream[C] = {
+      unfold((this, other)){
+        case (Cons(h1, t1), Cons(h2, t2)) => Some((f(h1(),h2()), (t1(), t2())))
+        case _ => None
+      }
+  }
+
+  def zipWithAll[B, C](other: Stream[B])(f: (Option[A], Option[B]) => C) : Stream[C] = {
+    unfold((this, other)){
+      case (Cons(h1, t1), Cons(h2, t2)) => Some((f(Some(h1()),Some(h2())), (t1(), t2())))
+      case (Cons(h, t), Empty) => Some((f(Some(h()),None), (t(), Empty)))
+      case (Empty, Cons(h, t)) => Some((f(None,Some(h())), (Empty, t())))
+      case _ => None
+    }
+
+  }
+
+  def tails: Stream[Stream[A]] = {
+   ???
+  }
 
 
 }
