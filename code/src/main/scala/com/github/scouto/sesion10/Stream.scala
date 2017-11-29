@@ -146,23 +146,19 @@ sealed trait Stream[+A] {
 
   //Sesion 12
   def mapUnfold[B](f: A => B): Stream[B] = {
-    unfold(this){
-      case Cons(h, t) => Some((f(h()), t()))
-      case Empty => None
-    }
+      unfold(this) {
+        case Cons(h,t) => Some((f(h()), t()))
+        case _ => None
+      }
   }
-
 
   def takeUnfold(n: Int): Stream[A] = {
     unfold((this, n)) {
-      case (Cons(h, _), 1)=> Some((h(), (empty, 0)))
-      case (Cons(h, t), x) if x > 1 => Some((h(), (t(), x-1)))
+      case (Cons(h, _), 1)=> Some((h(),(empty, 0)))
+      case (Cons(h, t), x) if x > 1 => Some((h(),(t(), x-1)))
       case _ => None
     }
   }
-
-
-//  S => Option[(A, (this, n))]
 
   def takeWhileUnfold(p: A => Boolean): Stream[A] = {
     unfold(this){
@@ -171,11 +167,6 @@ sealed trait Stream[+A] {
     }
   }
 
-
-
-//
-//  List(1,2,3)
-//  List(2,3,4)
   def zipWith[B, C](other: Stream[B])(f: (A, B) => C): Stream[C] = {
       unfold((this, other)){
         case (Cons(h1, t1), Cons(h2, t2)) => Some((f(h1(),h2()), (t1(), t2())))
@@ -184,18 +175,33 @@ sealed trait Stream[+A] {
   }
 
   def zipWithAll[B, C](other: Stream[B])(f: (Option[A], Option[B]) => C) : Stream[C] = {
-    unfold((this, other)){
-      case (Cons(h1, t1), Cons(h2, t2)) => Some((f(Some(h1()),Some(h2())), (t1(), t2())))
-      case (Cons(h, t), Empty) => Some((f(Some(h()),None), (t(), Empty)))
-      case (Empty, Cons(h, t)) => Some((f(None,Some(h())), (Empty, t())))
+    unfold((this, other))  {
+      case (Cons(h1,t1), Cons(h2,t2)) => Some((f(Some(h1()), Some(h2())), (t1(), t2())))
+      case (Cons(h,t), Empty) => Some((f(Some(h()), None), (t(), empty)))
+      case (Empty, Cons(h,t)) => Some((f(None, Some(h())), (empty, t())))
       case _ => None
     }
-
   }
 
   def tails: Stream[Stream[A]] = {
-   ???
+    unfold(this)  {
+      case Empty => None
+      case Cons(h,t) => Some((Cons(h,t), t()))
+      //      case stream => Some(stream, stream drop 1)
+    } append Empty
   }
+
+  //Sesion 13
+  def zip[B](s2: Stream[B]): Stream[(A, B)] = ???
+
+  def zipAll[B](s2: Stream[B]): Stream[(Option[A], Option[B])] = ???
+
+  def empiezaPor[A](s: Stream[A]): Boolean = ???
+
+  def tieneSubsecuencia[A](s: Stream[A]): Boolean = ???
+
+
+
 
 
 }
