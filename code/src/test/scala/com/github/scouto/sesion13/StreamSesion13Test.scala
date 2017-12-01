@@ -46,7 +46,6 @@ class StreamSesion13Test extends FlatSpec with Matchers with PropertyChecks {
   }
 
 
-
   "empiezaPor" should "do this" in {
     val l1 = Stream(1, 2,3, 4)
     assert(l1.empiezaPor(Stream(1)))
@@ -56,7 +55,7 @@ class StreamSesion13Test extends FlatSpec with Matchers with PropertyChecks {
     assert(!l1.empiezaPor(Stream(4)))
     assert(l1.empiezaPor(Empty))
     assert(emptyIntStream.empiezaPor(Empty))
-    //emptyIntStream.empiezaPor(Stream(1)) should be (false)
+    emptyIntStream.empiezaPor(Stream(1)) should be (false)
   }
 
   "tieneSubsecuencia" should "do this" in {
@@ -68,6 +67,8 @@ class StreamSesion13Test extends FlatSpec with Matchers with PropertyChecks {
     assert(l1.tieneSubsecuencia(Stream(4)))
     assert(!l1.tieneSubsecuencia(Stream(1, 3)))
     assert(l1.tieneSubsecuencia(Empty))
+    assert(emptyIntStream.tieneSubsecuencia(Empty))
+    assert(!emptyIntStream.tieneSubsecuencia(Stream(1)))
     assert(l1.tieneSubsecuencia(Stream(1,2)))
 
   }

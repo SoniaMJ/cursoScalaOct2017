@@ -184,21 +184,33 @@ sealed trait Stream[+A] {
   }
 
   def tails: Stream[Stream[A]] = {
-    unfold(this)  {
+    unfold(this){
       case Empty => None
       case Cons(h,t) => Some((Cons(h,t), t()))
-      //      case stream => Some(stream, stream drop 1)
+      //case stream => Some(stream, stream drop 1)
     } append Empty
   }
 
   //Sesion 13
-  def zip[B](s2: Stream[B]): Stream[(A, B)] = ???
+  def zip[B](s2: Stream[B]): Stream[(A, B)] = {
+    zipWith(s2)((_,_))
+  }
 
-  def zipAll[B](s2: Stream[B]): Stream[(Option[A], Option[B])] = ???
+  def zipAll[B](s2: Stream[B]): Stream[(Option[A], Option[B])] = {
+    zipWithAll(s2)((_,_))
+  }
 
-  def empiezaPor[A](s: Stream[A]): Boolean = ???
+  def empiezaPor[A](s: Stream[A]): Boolean = {
+    zipAll(s).takeWhile(_._2.isDefined).forAll{case (x, y) => x == y} //foldRight(true)((elem, acc) => elem._1==elem._2 && acc)
+//    zipAll(s).takeWhile(_._2.isDefined).forAll{x => x._1 == x._2} //foldRight(true)((elem, acc) => elem._1==elem._2 && acc)
+  }
 
-  def tieneSubsecuencia[A](s: Stream[A]): Boolean = ???
+
+
+
+  def tieneSubsecuencia[A](s: Stream[A]): Boolean = {
+      tails.exists(_.empiezaPor(s))
+  }
 
 
 
