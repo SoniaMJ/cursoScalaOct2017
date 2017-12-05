@@ -35,28 +35,8 @@ object Sesion4 extends App{
   }
 
 
-  def msort[T]( xs: List[T], less: (T, T) => Boolean): List[T] = {
-
-    @annotation.tailrec
-    def accsort (acc: List[T], pending: List[T]): List[T] ={
-      pending match {
-        case h::Nil => acc:::List(h)
-        case h::t if less(h, t.head) && !isSorted(t.tail, less) => accsort(acc:::List(h):::List(t.head), t.tail)
-        case h::t if less(h, t.head) && isSorted(t.tail, less) => acc:::pending
-        case h::t if !less(h, t.head) => accsort(acc:::List(t.head):::List(h), t.tail)
-        case _ => acc
-
-      }
-
-    }
-    accsort(List(), xs)
-
-  }
-
 
   def msort2[T](less: (T, T) => Boolean, list: List[T]): List[T] = {
-
-
 
 
     def go(left: List[T], right: List[T]): List[T] = {

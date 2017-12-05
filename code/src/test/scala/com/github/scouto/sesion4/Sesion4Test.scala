@@ -81,11 +81,9 @@ class Sesion4Test extends FlatSpec with Matchers with PropertyChecks{
 
     val emptyList: List[Int] = List()
     val oneElemList = List(5)
-    msort(emptyList, intOrdering) should be (emptyList)
     msort2(intOrdering, emptyList) should be (emptyList)
     mSort3(intOrdering, emptyList)  should be (emptyList)
 
-    msort(oneElemList, intOrdering) should be (oneElemList)
     msort2(intOrdering, oneElemList) should be (oneElemList)
     mSort3(intOrdering, oneElemList)  should be (oneElemList)
 
@@ -98,16 +96,13 @@ class Sesion4Test extends FlatSpec with Matchers with PropertyChecks{
     val list1 = List(5, 4, 1)
     val list2 = List(1, 4, 1)
     val list3 = List(1, 4, 1, 6)
-    msort(list1, intOrdering) should be (list1.sorted)
     msort2(intOrdering, list1) should be (list1.sorted)
     mSort3(intOrdering, list1)  should be (list1.sorted)
 
-    msort(list2, intOrdering) should be (list2.sorted)
     msort2(intOrdering, list2) should be (list2.sorted)
     mSort3(intOrdering, list2)  should be (list2.sorted)
 
-    msort(list3, intOrdering) should be (list3.sorted)
-    msort2(intOrdering, list3) should be (list3.sorted)
+      msort2(intOrdering, list3) should be (list3.sorted)
     mSort3(intOrdering, list3)  should be (list3.sorted)
 
   }

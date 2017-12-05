@@ -206,8 +206,6 @@ sealed trait Stream[+A] {
   }
 
 
-
-
   def tieneSubsecuencia[A](s: Stream[A]): Boolean = {
       tails.exists(_.empiezaPor(s))
   }

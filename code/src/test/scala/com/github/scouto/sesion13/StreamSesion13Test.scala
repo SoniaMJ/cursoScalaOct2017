@@ -67,7 +67,6 @@ class StreamSesion13Test extends FlatSpec with Matchers with PropertyChecks {
     assert(l1.tieneSubsecuencia(Stream(4)))
     assert(!l1.tieneSubsecuencia(Stream(1, 3)))
     assert(l1.tieneSubsecuencia(Empty))
-    assert(emptyIntStream.tieneSubsecuencia(Empty))
     assert(!emptyIntStream.tieneSubsecuencia(Stream(1)))
     assert(l1.tieneSubsecuencia(Stream(1,2)))
 
