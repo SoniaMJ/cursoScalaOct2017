@@ -3,6 +3,8 @@ package com.github.scouto.sesion12
 /**
   * Created by couto on 5/07/17.
   */
+import scala.annotation.tailrec
+
 
 trait RNG {
   def nextInt: (Int, RNG)
